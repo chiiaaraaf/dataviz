@@ -34,8 +34,12 @@ for country in data_long['Country Name'].unique():
         )
     )
 
-# Create a button for each country, including a 'Select' option
-buttons = [dict(label='Select', method='update', args=[{'visible': [False]*len(data_long['Country Name'].unique())}, {'title': 'Select a country'}])]
+# Create the 'Select' option button
+buttons = [dict(label='Select', method='update', 
+                args=[{'visible': [False]*len(data_long['Country Name'].unique())},
+                      {'title': 'Select a country to display the data'}])]
+
+# Create a button for each country
 for i, country in enumerate(data_long['Country Name'].unique()):
     buttons.append(
         dict(
@@ -46,23 +50,28 @@ for i, country in enumerate(data_long['Country Name'].unique()):
         )
     )
 
-# Add a dropdown to the figure and set the initial layout
+# Update the layout of the figure to include the dropdown and set text color
 fig.update_layout(
-    updatemenus=[dict(active=-1, buttons=buttons)],
+    updatemenus=[dict(active=0, buttons=buttons, bgcolor='white', font_color='black')],
     title="Gross Capital Formation (% of GDP) by Country and Year",
+    title_font_color='black',  # Set title text color
     xaxis=dict(
         title='',  # Remove x-axis label
         showgrid=False,  # Remove x-axis grid lines
-        zeroline=False  # Remove the x-axis zero line
+        zeroline=False,  # Remove the x-axis zero line
+        color='black'  # Set x-axis text color
     ),
     yaxis=dict(
         title='',  # Remove y-axis label
         showgrid=False,  # Remove y-axis grid lines
-        zeroline=False  # Remove the y-axis zero line
+        zeroline=False,  # Remove the y-axis zero line
+        color='black'  # Set y-axis text color
     ),
     plot_bgcolor='white',  # Set background color to white
     paper_bgcolor='white',  # Ensure that the background around the plot is white
-    autosize=True  # Auto-adjust the size to fit the container
+    autosize=True,  # Auto-adjust the size to fit the container
+    font_color='black',  # Set the overall font color
+    font_size=12  # Set the base font size
 )
 
 # Use Streamlit to render the figure
