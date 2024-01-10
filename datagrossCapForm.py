@@ -35,15 +35,22 @@ for country in data_long['Country Name'].unique():
         )
     )
 
-# Set the first country visible
-# This will display the first country's data when the app is run
-if len(fig.data) > 0:
-    fig.data[0].visible = True
-    # Set title dynamically based on the first visible country
-    fig.update_layout(title=f"Gross Capital Formation (% of GDP) for {fig.data[0].name}")
+# Create a button for each country
+buttons = []
+for i, country in enumerate(data_long['Country Name'].unique()):
+    buttons.append(
+        dict(
+            label=country,
+            method="update",
+            args=[{"visible": [j == i for j in range(len(data_long['Country Name'].unique()))]},
+                  {"title": f"Gross Capital Formation (% of GDP) for {country}"}],
+        )
+    )
 
-# Configure the layout of the figure
+# Add a dropdown to the figure and remove the axis labels
 fig.update_layout(
+    updatemenus=[dict(active=0, buttons=buttons)],
+    title="Gross Capital Formation (% of GDP) by Country and Year",
     xaxis=dict(
         title='',  # Remove x-axis label
         showgrid=False,  # Remove x-axis grid lines
@@ -56,6 +63,9 @@ fig.update_layout(
     ),
     plot_bgcolor='white'  # Set background color to white
 )
+
+# Set the first country visible (optional)
+# fig.data[0].visible = True
 
 # Use Streamlit to render the figure
 st.plotly_chart(fig, use_container_width=True)
