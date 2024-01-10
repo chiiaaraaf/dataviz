@@ -4,7 +4,6 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
 # Load the cleaned dataset with the correct relative path
-# Make sure the CSV file is in the same directory as your Streamlit app or adjust the path as necessary
 data = pd.read_csv('data/cleaned_grossCapitalFormation.csv')
 
 # Convert the dataset from wide to long format for easier plotting
@@ -35,8 +34,8 @@ for country in data_long['Country Name'].unique():
         )
     )
 
-# Create a button for each country
-buttons = []
+# Create a button for each country, including a 'Select' option
+buttons = [dict(label='Select', method='update', args=[{'visible': [False]*len(data_long['Country Name'].unique())}, {'title': 'Select a country'}])]
 for i, country in enumerate(data_long['Country Name'].unique()):
     buttons.append(
         dict(
@@ -47,9 +46,9 @@ for i, country in enumerate(data_long['Country Name'].unique()):
         )
     )
 
-# Add a dropdown to the figure and remove the axis labels
+# Add a dropdown to the figure and set the initial layout
 fig.update_layout(
-    updatemenus=[dict(active=0, buttons=buttons)],
+    updatemenus=[dict(active=-1, buttons=buttons)],
     title="Gross Capital Formation (% of GDP) by Country and Year",
     xaxis=dict(
         title='',  # Remove x-axis label
@@ -61,11 +60,10 @@ fig.update_layout(
         showgrid=False,  # Remove y-axis grid lines
         zeroline=False  # Remove the y-axis zero line
     ),
-    plot_bgcolor='white'  # Set background color to white
+    plot_bgcolor='white',  # Set background color to white
+    paper_bgcolor='white',  # Ensure that the background around the plot is white
+    autosize=True  # Auto-adjust the size to fit the container
 )
-
-# Set the first country visible (optional)
-# fig.data[0].visible = True
 
 # Use Streamlit to render the figure
 st.plotly_chart(fig, use_container_width=True)
