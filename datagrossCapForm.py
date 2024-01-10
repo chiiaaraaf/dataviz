@@ -46,25 +46,21 @@ for i, country in enumerate(data_long['Country Name'].unique()):
         )
     )
 
-# Set the 'Select' title to prompt user selection
-fig.update_layout(
-    title="Select a country to display the data",
-    title_font_color='black',  # Set title text color
-)
-
 # Update the layout of the figure to include the dropdown and set text color
 fig.update_layout(
     updatemenus=[{
         'type': 'dropdown',
         'buttons': buttons,
         'direction': 'down',
-        'active': 0,  # Set the 'Select' text to be the first active selection
+        'active': -1,  # No country is selected by default
         'pad': {'r': 10, 't': 10},
         'x': 0.01,
         'xanchor': 'left',
         'y': 1.15,
         'yanchor': 'top'
     }],
+    title="Select a country to display the data",  # Default title
+    title_font_color='black',
     xaxis=dict(
         title='',
         showgrid=False,
