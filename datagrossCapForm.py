@@ -1,13 +1,15 @@
+import streamlit as st
 import pandas as pd
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
-# Load the cleaned dataset
-data = pd.read_csv('data/cleaned_grossCapitalFormation.csv')  # Update with your path
+# Load the cleaned dataset with the correct relative path
+# Make sure the CSV file is in the same directory as your Streamlit app or adjust the path as necessary
+data = pd.read_csv('data/cleaned_grossCapitalFormation.csv')
 
 # Convert the dataset from wide to long format for easier plotting
-data_long = data.melt(id_vars=["Country Name", "Country Code"], 
-                      var_name="Year", 
+data_long = data.melt(id_vars=["Country Name", "Country Code"],
+                      var_name="Year",
                       value_name="Gross Capital Formation (% of GDP)")
 
 # Convert 'Year' to integers
@@ -29,26 +31,19 @@ for country in data_long['Country Name'].unique():
             visible=False,  # Hide all traces initially
             line=dict(color='black'),  # Set the line color to black
             connectgaps=False,  # Don't connect gaps
-            hoverinfo='x+y'  # Show only the year and the value on hover
+            hovertemplate='Year: %{x}<br>Value: %{y:.2f}'  # Custom hover info
         )
     )
 
-# Create a button for each country
-buttons = []
-for i, country in enumerate(data_long['Country Name'].unique()):
-    buttons.append(
-        dict(
-            label=country,
-            method="update",
-            args=[{"visible": [j == i for j in range(len(data_long['Country Name'].unique()))]},
-                  {"title": f"Gross Capital Formation (% of GDP) for {country}"}],
-        )
-    )
+# Set the first country visible
+# This will display the first country's data when the app is run
+if len(fig.data) > 0:
+    fig.data[0].visible = True
+    # Set title dynamically based on the first visible country
+    fig.update_layout(title=f"Gross Capital Formation (% of GDP) for {fig.data[0].name}")
 
-# Add a dropdown to the figure and remove the axis labels
+# Configure the layout of the figure
 fig.update_layout(
-    updatemenus=[dict(active=0, buttons=buttons)],
-    title="Gross Capital Formation (% of GDP) by Country and Year",
     xaxis=dict(
         title='',  # Remove x-axis label
         showgrid=False,  # Remove x-axis grid lines
@@ -62,8 +57,5 @@ fig.update_layout(
     plot_bgcolor='white'  # Set background color to white
 )
 
-# Set the first country visible
-fig.data[0].visible = True
-
-# Show the figure
-fig.show()
+# Use Streamlit to render the figure
+st.plotly_chart(fig, use_container_width=True)
