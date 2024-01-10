@@ -30,12 +30,16 @@ for country in data_long['Country Name'].unique():
             visible=False,  # Hide all traces initially
             line=dict(color='black'),  # Set the line color to black
             connectgaps=False,  # Don't connect gaps
-            hovertemplate='Year: %{x}<br>Value: %{y:.2f}'  # Custom hover info
+            hovertemplate='Year: %{x}<br>Value: %{y:.2f}<extra></extra>'  # Custom hover info without country name
         )
     )
 
+# Create the 'Select' option button
+buttons = [dict(label='Select', method='update', 
+                args=[{'visible': [False]*len(data_long['Country Name'].unique())},
+                      {'title': 'Select a country to display the data'}])]
+
 # Create a button for each country
-buttons = []
 for i, country in enumerate(data_long['Country Name'].unique()):
     buttons.append(
         dict(
@@ -60,23 +64,23 @@ fig.update_layout(
         'yanchor': 'top'
     }],
     title="Select a country to display the data",  # Default title
-    title_font_color='black',
+    title_font_color='black',  # Set title text color
     xaxis=dict(
-        title='',
-        showgrid=False,
-        zeroline=False,
-        tickfont=dict(color='black'),
+        title='',  # Remove x-axis label
+        showgrid=False,  # Remove x-axis grid lines
+        zeroline=False,  # Remove the x-axis zero line
+        tickfont=dict(color='black'),  # Set x-axis tick labels to black
     ),
     yaxis=dict(
-        title='',
-        showgrid=False,
-        zeroline=False,
-        tickfont=dict(color='black'),
+        title='',  # Remove y-axis label
+        showgrid=False,  # Remove y-axis grid lines
+        zeroline=False,  # Remove the y-axis zero line
+        tickfont=dict(color='black'),  # Set y-axis tick labels to black
     ),
-    plot_bgcolor='white',
-    paper_bgcolor='white',
-    font_color='black',
-    autosize=True
+    plot_bgcolor='white',  # Set background color to white
+    paper_bgcolor='white',  # Ensure that the background around the plot is white
+    font_color='black',  # Set the overall font color
+    autosize=True  # Auto-adjust the size to fit the container
 )
 
 # Use Streamlit to render the figure
