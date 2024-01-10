@@ -3,7 +3,7 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
 # Load the cleaned dataset
-data = pd.read_csv('/cleaned_grossCapitalFormation.csv')  # Update with your path
+data = pd.read_csv('cleaned_grossCapitalFormation.csv')  # Update with your path
 
 # Convert the dataset from wide to long format for easier plotting
 data_long = data.melt(id_vars=["Country Name", "Country Code"], 
