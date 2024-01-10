@@ -34,12 +34,8 @@ for country in data_long['Country Name'].unique():
         )
     )
 
-# Create the 'Select' option button
-buttons = [dict(label='Select', method='update', 
-                args=[{'visible': [False]*len(data_long['Country Name'].unique())},
-                      {'title': 'Select a country to display the data'}])]
-
 # Create a button for each country
+buttons = []
 for i, country in enumerate(data_long['Country Name'].unique()):
     buttons.append(
         dict(
@@ -50,42 +46,42 @@ for i, country in enumerate(data_long['Country Name'].unique()):
         )
     )
 
+# Set the 'Select' title to prompt user selection
+fig.update_layout(
+    title="Select a country to display the data",
+    title_font_color='black',  # Set title text color
+)
+
 # Update the layout of the figure to include the dropdown and set text color
 fig.update_layout(
     updatemenus=[{
         'type': 'dropdown',
-        'showactive': False,  # Prevents showing the active selection
-        'active': -1,  # Ensures no button is selected initially
         'buttons': buttons,
         'direction': 'down',
+        'active': 0,  # Set the 'Select' text to be the first active selection
         'pad': {'r': 10, 't': 10},
-        'x': 0.01,  # Adjust the position of the dropdown menu
+        'x': 0.01,
         'xanchor': 'left',
-        'y': 1.15,  # Adjust the position of the dropdown menu
+        'y': 1.15,
         'yanchor': 'top'
     }],
-    title="Gross Capital Formation (% of GDP) by Country and Year",
-    title_font_color='black',  # Set title text color
     xaxis=dict(
-        title='',  # Remove x-axis label
-        showgrid=False,  # Remove x-axis grid lines
-        zeroline=False,  # Remove the x-axis zero line
-        tickfont=dict(color='black'),  # Set x-axis tick labels to black
+        title='',
+        showgrid=False,
+        zeroline=False,
+        tickfont=dict(color='black'),
     ),
     yaxis=dict(
-        title='',  # Remove y-axis label
-        showgrid=False,  # Remove y-axis grid lines
-        zeroline=False,  # Remove the y-axis zero line
-        tickfont=dict(color='black'),  # Set y-axis tick labels to black
+        title='',
+        showgrid=False,
+        zeroline=False,
+        tickfont=dict(color='black'),
     ),
-    plot_bgcolor='white',  # Set background color to white
-    paper_bgcolor='white',  # Ensure that the background around the plot is white
-    font_color='black',  # Set the overall font color
-    autosize=True  # Auto-adjust the size to fit the container
+    plot_bgcolor='white',
+    paper_bgcolor='white',
+    font_color='black',
+    autosize=True
 )
-
-# Set the first country visible (optional)
-# fig.data[0].visible = True
 
 # Use Streamlit to render the figure
 st.plotly_chart(fig, use_container_width=True)
