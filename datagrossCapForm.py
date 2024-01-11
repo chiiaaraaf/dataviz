@@ -48,7 +48,7 @@ fig.update_layout(
         'type': 'dropdown',
         'buttons': buttons,
         'direction': 'down',
-        'active': -1,  # No country is selected by default
+        'active': 0,  # No country is selected by default
         'pad': {'r': 10, 't': 10},
         'x': 0.01,
         'xanchor': 'left',
