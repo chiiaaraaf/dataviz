@@ -29,7 +29,7 @@ for country in data_long['Country Name'].unique():
         )
     )
 
-buttons = [dict(label='select',method='update', 
+buttons = [dict(label='Select',method='update', 
                 args=[{'visible': [False]*len(data_long['Country Name'].unique())},
                       {'title': 'Select a country to display the data'}])]
 
