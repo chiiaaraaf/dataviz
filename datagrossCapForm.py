@@ -14,59 +14,53 @@ data_long['Year'] = pd.to_numeric(data_long['Year'], errors='coerce')
 data_long.dropna(subset=['Year'], inplace=True)
 data_long['Year'] = data_long['Year'].astype(int)
 
-# Initialize session state
-if 'selected_country' not in st.session_state:
-    st.session_state['selected_country'] = None
-
-# Sidebar for country selection
-if st.session_state['selected_country'] is None:
-    country = st.sidebar.selectbox('Select a Country', ['Select'] + list(data_long['Country Name'].unique()))
-    if country != 'Select':
-        st.session_state['selected_country'] = country
-else:
-    country = st.session_state['selected_country']
-
 # Create the figure
 fig = make_subplots(rows=1, cols=1)
 
 # Add the traces for each country to the figure
-for country_name in data_long['Country Name'].unique():
-    country_data = data_long[data_long['Country Name'] == country_name]
+for country in data_long['Country Name'].unique():
+    country_data = data_long[data_long['Country Name'] == country]
     fig.add_trace(
         go.Scatter(
             x=country_data['Year'],
             y=country_data['Gross Capital Formation (% of GDP)'],
-            name=country_name,
-            visible=(country_name == country),  # Show only the selected country's trace
-            line=dict(color='black'),
-            connectgaps=False,
-            hovertemplate='Year: %{x}<br>Value: %{y:.2f}<extra></extra>'
+            name=country,
+            visible=False,  # Hide all traces initially
+            line=dict(color='black'),  # Set the line color to black
+            connectgaps=False,  # Don't connect gaps
+            hovertemplate='Year: %{x}<br>Value: %{y:.2f}<extra></extra>'  # Custom hover info without country name
         )
     )
 
-# Update the layout of the figure if a country is selected
-if country != 'Select':
-    fig.update_layout(
-        title=f"Gross Capital Formation (% of GDP) for {country}",
-        title_font_color='black',
-        xaxis=dict(
-            title='',
-            showgrid=False,
-            zeroline=False,
-            tickfont=dict(color='black'),
-        ),
-        yaxis=dict(
-            title='',
-            showgrid=False,
-            zeroline=False,
-            tickfont=dict(color='black'),
-        ),
-        plot_bgcolor='white',
-        paper_bgcolor='white',
-        font_color='black',
-        autosize=True
-    )
+# Sidebar for country selection
+country = st.sidebar.selectbox('Select a Country', data_long['Country Name'].unique())
+
+# Update the visibility of the trace corresponding to the selected country
+for i, trace in enumerate(fig['data']):
+    if trace.name == country:
+        fig['data'][i]['visible'] = True
+
+# Update the layout of the figure
+fig.update_layout(
+    title=f"Gross Capital Formation (% of GDP) for {country}",
+    title_font_color='black',
+    xaxis=dict(
+        title='',
+        showgrid=False,
+        zeroline=False,
+        tickfont=dict(color='black'),
+    ),
+    yaxis=dict(
+        title='',
+        showgrid=False,
+        zeroline=False,
+        tickfont=dict(color='black'),
+    ),
+    plot_bgcolor='white',
+    paper_bgcolor='white',
+    font_color='black',
+    autosize=True
+)
 
 # Render the plotly chart in Streamlit
 st.plotly_chart(fig, use_container_width=True)
-
