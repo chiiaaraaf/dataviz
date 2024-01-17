@@ -3,7 +3,6 @@ import pandas as pd
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
-# Assuming your CSV has the correct format, this should work as expected.
 data = pd.read_csv('data/cleaned_grossCapitalFormation.csv')
 
 data_long = data.melt(id_vars=["Country Name", "Country Code"],
@@ -30,7 +29,7 @@ for country in data_long['Country Name'].unique():
         )
     )
 
-buttons = [dict(label='Select', method='update', 
+buttons = [dict(label='Select',method='update', 
                 args=[{'visible': [False]*len(data_long['Country Name'].unique())},
                       {'title': 'Select a country to display the data'}])]
 
@@ -44,39 +43,36 @@ for i, country in enumerate(data_long['Country Name'].unique()):
         )
     )
 
-# Adjust the 'y' parameter here to move the dropdown menu to a suitable location
 fig.update_layout(
     updatemenus=[{
         'type': 'dropdown',
         'buttons': buttons,
-        'showactive': True,  # Show which button is active
         'direction': 'down',
         'active': 0,  # No country is selected by default
         'pad': {'r': 10, 't': 10},
-        'x': 0.01,  # You may adjust this for horizontal positioning
+        'x': 0.01,
         'xanchor': 'left',
-        # Adjust the vertical position of the dropdown to avoid overlap with the chart
-        'y': 0.5,  # This value may need adjustment
-        'yanchor': 'bottom'
+        'y': 1.2,  # Position the dropdown menu above the graph area
+        'yanchor': 'top'
     }],
     title="Select a country to display the data",
     title_font_color='black',
     xaxis=dict(
-        title='',
-        showgrid=False,
-        zeroline=False,
-        tickfont=dict(color='black'),
+        title='', 
+        showgrid=False, 
+        zeroline=False, 
+        tickfont=dict(color='black'), 
     ),
     yaxis=dict(
-        title='',
-        showgrid=False,
-        zeroline=False,
-        tickfont=dict(color='black'),
+        title='', 
+        showgrid=False, 
+        zeroline=False, 
+        tickfont=dict(color='black'), 
     ),
-    plot_bgcolor='white',
-    paper_bgcolor='white',
-    font_color='black',
-    autosize=True
+    plot_bgcolor='white',  
+    paper_bgcolor='white', 
+    font_color='black',  
+    autosize=True 
 )
 
 # Use Streamlit to render the figure
