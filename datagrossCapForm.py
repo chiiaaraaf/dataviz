@@ -29,7 +29,7 @@ for country in data_long['Country Name'].unique():
         )
     )
 
-buttons = [dict(label='Select',method='update', 
+buttons = [dict(label='Select', method='update', 
                 args=[{'visible': [False]*len(data_long['Country Name'].unique())},
                       {'title': 'Select a country to display the data'}])]
 
@@ -43,6 +43,7 @@ for i, country in enumerate(data_long['Country Name'].unique()):
         )
     )
 
+# Adjust the 'y' parameter here to move the dropdown menu below the graph
 fig.update_layout(
     updatemenus=[{
         'type': 'dropdown',
@@ -52,8 +53,9 @@ fig.update_layout(
         'pad': {'r': 10, 't': 10},
         'x': 0.01,
         'xanchor': 'left',
-        'y': 1.15,
-        'yanchor': 'top'
+        # Position the dropdown menu below the graph
+        'y': 0.9,
+        'yanchor': 'bottom'
     }],
     title="Select a country to display the data", 
     title_font_color='black', 
