@@ -3,18 +3,21 @@ import pandas as pd
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
+# Load your data
 data = pd.read_csv('data/cleaned_grossCapitalFormation.csv')
 
+# Transform your data
 data_long = data.melt(id_vars=["Country Name", "Country Code"],
                       var_name="Year",
                       value_name="Gross Capital Formation (% of GDP)")
-
 data_long['Year'] = pd.to_numeric(data_long['Year'], errors='coerce')
 data_long.dropna(subset=['Year'], inplace=True)
 data_long['Year'] = data_long['Year'].astype(int)
 
+# Create the figure
 fig = make_subplots(rows=1, cols=1)
 
+# Add the traces for each country to the figure
 for country in data_long['Country Name'].unique():
     country_data = data_long[data_long['Country Name'] == country]
     fig.add_trace(
@@ -29,32 +32,17 @@ for country in data_long['Country Name'].unique():
         )
     )
 
-buttons = [dict(label='Select', method='update',
-                args=[{'visible': [False]*len(data_long['Country Name'].unique())},
-                      {'title': 'Select a country to display the data'}])]
+# Sidebar for country selection
+country = st.sidebar.selectbox('Select a Country', data_long['Country Name'].unique())
 
-for i, country in enumerate(data_long['Country Name'].unique()):
-    buttons.append(
-        dict(
-            label=country,
-            method="update",
-            args=[{"visible": [j == i for j in range(len(data_long['Country Name'].unique()))]},
-                  {"title": f"Gross Capital Formation (% of GDP) for {country}"}],
-        )
-    )
+# Update the visibility of the trace corresponding to the selected country
+for i, trace in enumerate(fig['data']):
+    if trace.name == country:
+        fig['data'][i]['visible'] = True
 
-# Position the dropdown menu to the left of the graph
+# Update the layout of the figure
 fig.update_layout(
-    updatemenus=[{
-        'type': 'dropdown',
-        'buttons': buttons,
-        'showactive': True,
-        'x': -0.15,  # Negative value to move it further left outside the plot area
-        'xanchor': 'left',
-        'y': 0.5,
-        'yanchor': 'middle'
-    }],
-    title="Select a country to display the data",
+    title=f"Gross Capital Formation (% of GDP) for {country}",
     title_font_color='black',
     xaxis=dict(
         title='',
@@ -74,5 +62,5 @@ fig.update_layout(
     autosize=True
 )
 
-# Use Streamlit to render the figure
+# Render the plotly chart in Streamlit
 st.plotly_chart(fig, use_container_width=True)
