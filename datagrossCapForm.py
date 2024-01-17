@@ -29,7 +29,7 @@ for country in data_long['Country Name'].unique():
         )
     )
 
-buttons = [dict(label='Select',method='update', 
+buttons = [dict(label='Select', method='update',
                 args=[{'visible': [False]*len(data_long['Country Name'].unique())},
                       {'title': 'Select a country to display the data'}])]
 
@@ -43,36 +43,35 @@ for i, country in enumerate(data_long['Country Name'].unique()):
         )
     )
 
+# Position the dropdown menu to the right of the y-axis
 fig.update_layout(
     updatemenus=[{
         'type': 'dropdown',
         'buttons': buttons,
-        'direction': 'down',
-        'active': 0,  # No country is selected by default
-        'pad': {'r': 10, 't': 10},
-        'x': 0.01,
+        'showactive': True,
+        'x': 1.1,
         'xanchor': 'left',
-        'y': 1.2,  # Position the dropdown menu above the graph area
-        'yanchor': 'top'
+        'y': 0.5,
+        'yanchor': 'middle'
     }],
     title="Select a country to display the data",
     title_font_color='black',
     xaxis=dict(
-        title='', 
-        showgrid=False, 
-        zeroline=False, 
-        tickfont=dict(color='black'), 
+        title='',
+        showgrid=False,
+        zeroline=False,
+        tickfont=dict(color='black'),
     ),
     yaxis=dict(
-        title='', 
-        showgrid=False, 
-        zeroline=False, 
-        tickfont=dict(color='black'), 
+        title='',
+        showgrid=False,
+        zeroline=False,
+        tickfont=dict(color='black'),
     ),
-    plot_bgcolor='white',  
-    paper_bgcolor='white', 
-    font_color='black',  
-    autosize=True 
+    plot_bgcolor='white',
+    paper_bgcolor='white',
+    font_color='black',
+    autosize=True
 )
 
 # Use Streamlit to render the figure
