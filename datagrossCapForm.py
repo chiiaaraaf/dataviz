@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
+# Assuming your CSV has the correct format, this should work as expected.
 data = pd.read_csv('data/cleaned_grossCapitalFormation.csv')
 
 data_long = data.melt(id_vars=["Country Name", "Country Code"],
@@ -43,38 +44,39 @@ for i, country in enumerate(data_long['Country Name'].unique()):
         )
     )
 
-# Adjust the 'y' parameter here to move the dropdown menu below the graph
+# Adjust the 'y' parameter here to move the dropdown menu to a suitable location
 fig.update_layout(
     updatemenus=[{
         'type': 'dropdown',
         'buttons': buttons,
+        'showactive': True,  # Show which button is active
         'direction': 'down',
         'active': 0,  # No country is selected by default
         'pad': {'r': 10, 't': 10},
-        'x': 0.01,
+        'x': 0.01,  # You may adjust this for horizontal positioning
         'xanchor': 'left',
-        # Position the dropdown menu below the graph
-        'y': 0.9,
+        # Adjust the vertical position of the dropdown to avoid overlap with the chart
+        'y': 0.5,  # This value may need adjustment
         'yanchor': 'bottom'
     }],
-    title="Select a country to display the data", 
-    title_font_color='black', 
+    title="Select a country to display the data",
+    title_font_color='black',
     xaxis=dict(
-        title='', 
-        showgrid=False, 
-        zeroline=False,  
-        tickfont=dict(color='black'), 
+        title='',
+        showgrid=False,
+        zeroline=False,
+        tickfont=dict(color='black'),
     ),
     yaxis=dict(
-        title='', 
-        showgrid=False, 
-        zeroline=False,  
-        tickfont=dict(color='black'), 
+        title='',
+        showgrid=False,
+        zeroline=False,
+        tickfont=dict(color='black'),
     ),
-    plot_bgcolor='white',  
-    paper_bgcolor='white', 
-    font_color='black',  
-    autosize=True 
+    plot_bgcolor='white',
+    paper_bgcolor='white',
+    font_color='black',
+    autosize=True
 )
 
 # Use Streamlit to render the figure
