@@ -43,13 +43,13 @@ for i, country in enumerate(data_long['Country Name'].unique()):
         )
     )
 
-# Position the dropdown menu to the right of the y-axis
+# Position the dropdown menu to the left of the graph
 fig.update_layout(
     updatemenus=[{
         'type': 'dropdown',
         'buttons': buttons,
         'showactive': True,
-        'x': 1.1,
+        'x': -0.15,  # Negative value to move it further left outside the plot area
         'xanchor': 'left',
         'y': 0.5,
         'yanchor': 'middle'
